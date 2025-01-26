@@ -1,0 +1,30 @@
+post_install() {
+
+  # create systemd-boot entry
+  if [ $(bootctl is-installed) = "yes" ]
+  then
+    kernel-install add "${1}-aarch64" "/usr/lib/modules/${1}-aarch64/Image"
+  fi
+
+}
+
+post_upgrade() {
+
+  # update systemd-boot entry
+  if [ $(bootctl is-installed) = "yes" ]
+  then
+    kernel-install remove "${2}-aarch64"
+    kernel-install add "${1}-aarch64" "/usr/lib/modules/${1}-aarch64/Image"
+  fi
+
+}
+
+post_remove() {
+
+  # remove systemd-boot entry
+  if [ $(bootctl is-installed) = "yes" ]
+  then
+    kernel-install remove "${1}-aarch64"
+  fi
+
+}
